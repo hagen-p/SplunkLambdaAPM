@@ -33,21 +33,20 @@ exports.handler = async(event) => {
         var price = 525;
         // give special customers a start discount
         if (CustomerType=="Gold" || CustomerType=="Platinum") {
-           var price = 499; 
+            price = 499; 
         }
         
         /// Set option for an other HTTPS call top a LAMBDA
         var discount = 0; // No discount unless call returns it
         const options = {
-            hostname: 'wsqs3fnopb.execute-api.eu-west-1.amazonaws.com',
-            //hostname: 'wsqs3fnopb.execute-api.eu-west-1.amazonaws.com',
+            hostname: 'e64fva75mh.execute-api.eu-west-1.amazonaws.com/default/',
             port: 443,
-            path: '/default/RetailDiscountChecker',
+            path: '/default/RetailOrderDiscount',
             method: 'GET'
         };
         
         //Fetch discount
-        // discount = await getDiscount(options);
+        discount = await getDiscount(options);
         
         // calc new price and send it back    
         var totalPrice = price - discount;
