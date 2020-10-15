@@ -6,7 +6,6 @@ async function getDiscount(options) {
     return new Promise((resolve, reject) => {
         let body = "";
         const req = https.get(options, function(res) {
-            console.log('statusCode: ' + req.statusCode);
             res.on('data', chunk => {
                 body += chunk;
                 console.log("body: " + body);
@@ -39,9 +38,9 @@ exports.handler = async(event) => {
         /// Set option for an other HTTPS call top a LAMBDA
         var discount = 0; // No discount unless call returns it
         const options = {
-            hostname: 'e64fva75mh.execute-api.eu-west-1.amazonaws.com/default/',
+            hostname: 'e64fva75mh.execute-api.eu-west-1.amazonaws.com', // This needs to be replaced with the right hostname of you lambda
             port: 443,
-            path: '/default/RetailOrderDiscount',
+            path: '/default/RetailOrderDiscount', // this needs to point to the proper endpoint of Your lambda
             method: 'GET'
         };
         
@@ -49,7 +48,8 @@ exports.handler = async(event) => {
         discount = await getDiscount(options);
         
         // calc new price and send it back    
-        var totalPrice = price - discount;
+        var totalPrice = price - discount; // very complex Math taken place here
+        
         response = {
             statusCode: 200,
             body: JSON.stringify({"Price": totalPrice })
