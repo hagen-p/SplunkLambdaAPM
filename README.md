@@ -8,3 +8,12 @@ Several Lambda Microservices written in python and Node-Js simulating a real ord
 A terraform module to install the basic lambda's in AWS
 
 The workshop documentation guiding you with adding Tracing to each of the modules
+
+Requirements:
+
+- Maven installed locally to run the Java springboot application
+- AWS Account and AIM Permission to run/build Lambda's
+- Base knowledge of Java, Python and/or Node-Js to follow guided development
+
+
+
