@@ -3,12 +3,12 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.sfx.JavaLambdaStarter</groupId>
-	<artifactId>JavaLambdaStarter</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<groupId>com.sfx.JavaLambda.Controller</groupId>
+	<artifactId>JavaLambda</artifactId>
+	<version>1.0</version>
 	<packaging>jar</packaging>
 
-	<name>microservice1</name>
+	<name>Spring Boot APM Starter</name>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -36,7 +36,14 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-log4j2</artifactId>
 		</dependency>
-		
+		<dependency> 
+			<groupId>org.springframework.boot</groupId> 
+			<artifactId>spring-boot-starter-thymeleaf</artifactId> 
+		</dependency>
+		<!-- <dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-zipkin</artifactId>
+		</dependency>  -->
 	</dependencies>
 
 	<dependencyManagement>
