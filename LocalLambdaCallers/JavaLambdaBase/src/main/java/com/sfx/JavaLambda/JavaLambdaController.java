@@ -2,6 +2,8 @@ package com.sfx.JavaLambda;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.*;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import java.util.*;
+import java.io.IOException;
 
 
 /*
@@ -54,7 +57,7 @@ public class JavaLambdaController {
 	}
 
 	@PostMapping("/order")
-	public String orderSubmit(@ModelAttribute Order Order, Model model) {
+	public String orderSubmit(@ModelAttribute Order Order, Model model) throws IOException  {
 		LOG.info("Inside OrderSubmit");
         // span.tag ("environment", sEnvironment);  // this tag is used by signalFX to place this in teh right cncepty in the ui - can be set by ENV variable or the agent
 		// span.tag("Version", sVersion); // sending tag along in the span. usefull for development
@@ -74,17 +77,21 @@ public class JavaLambdaController {
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		// create a map for post parameters
 		Map<String, Object> map = new HashMap<>();
-		map.put("ProductName", "Order.phoneType");
-		map.put("Quantity", "Order.quantity");
-		map.put("CustomerType", "Order.customerType");
+		map.put("ProductName", Order.getPhoneType());
+		map.put("Quantity",  Order.getQuantity());
+		map.put("CustomerType", Order.getCustomerType());
 		// build the request
-		HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);
+		HttpEntity<Map<String, Object>> orderRequest = new HttpEntity<>(map, headers);
 		// send POST request
-		ResponseEntity<Order> responseOrder = this.restTemplate.postForEntity(url, entity, Order.class);
-		LOG.info("The response recieved by the remote call is " + responseOrder.toString());
-		Order.setPrice(1111.1);
-		Order.setTransaction("8072washere");
-		model.addAttribute("order", Order);
+		ResponseEntity<String> returnedOrder = this.restTemplate.postForEntity(url, orderRequest, String.class);
+        
+		ObjectMapper objectMapper = new ObjectMapper();
+		ObjectReader objectReader = objectMapper.readerForUpdating(Order);
+		
+		Order newOrder = objectReader.readValue(returnedOrder.getBody());
+		LOG.info("The response recieved by the remote call is " + returnedOrder.toString());
+		
+		model.addAttribute("order", newOrder);
 		LOG.info("Leaving OrderSubmit");	
 		return "result";
 	}

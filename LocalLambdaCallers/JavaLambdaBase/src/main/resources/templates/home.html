@@ -21,7 +21,7 @@
 
     <form action="#" th:action="@{/order}" th:object="${order}" method="post">
         <p>Phone    : <input type="text" th:field="*{phoneType}" /></p>
-        <p>Quantity : <input type="int" th:field="*{quantity}" /></p>
+        <p>Quantity : <input type="number" th:field="*{quantity}" /></p>
         <p>Customer : <select th:field="*{customerType}">
             <option th:value="Silver" th:text="Silver"></option>
             <option th:value="Gold" th:text="Gold"></option>
