@@ -25,30 +25,31 @@
         <!-- Main jumbotron for a primary marketing message or call to action -->
         <div class="jumbotron">
           <div class="container">
-            <h1 class="display-3">Splunk Mobile Shop</h1>
+            <h1 class="display-3">Splunk Mobile Shop (APM version)</h1>
             <p>Welcome to the Splunk Mobile Shop. Order your new phone today!</p>
 
           </div>
         </div>
 
         <div class="container">
-            <!-- Example row of columns -->
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-6">
                 <h2>Select your product</h2>
                 <form action="#" th:action="@{/order}" th:object="${order}" method="post">
-                    <p>Phone    : <input type="text" th:field="*{phoneType}" /></p>
-                    <p>Quantity : <input type="number" th:field="*{quantity}" /></p>
-                    <p>Customer : <select th:field="*{customerType}">
+                    <div class="form-group">
+                    <Label for="phoneInput">Phone</label>
+                    <input type="text" class="form-control" th:field="*{phoneType}" />
+                    <label for="quantityInput">Quantity</label>
+                    <input type="number" class="form-control" th:field="*{quantity}" /></p>
+                    <label for="customerType">Customer</label>
+                    <select class="form-control" th:field="*{customerType}">
                         <option th:value="Silver" th:text="Silver"></option>
                         <option th:value="Gold" th:text="Gold"></option>
                         <option th:value="Platinum" th:text="Platinum"></option>
-                    </select></p>
-                    <br>
-                    <br>
-                    <td colspan = "2">
-                       <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
-                <br>
+                    </select>
+                    <br />
+                    <input type="submit" value="Submit" class="btn btn-primary btn-lg" /> <input type="reset" value="Reset" class="btn btn-primary btn-lg" /></p>
+                </div>
                 </form>
               </div>
            

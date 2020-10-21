@@ -1,11 +1,20 @@
 .DS_Store
+LocalLambdaCallers/JavaLambdaBase/target
 LocalLambdaCallers/JavaLambdaBase/target/*
-LocalLambdaCallers/JavaLambdaOT/target/*
+LocalLambdaCallers/JavaLambdaBase/bin
+LocalLambdaCallers/JavaLambdaBase/bin/*
 LocalLambdaCallers/JavaLambdaBase/.factorypath
 LocalLambdaCallers/JavaLambdaBase/.project
-LocalLambdaCallers/JavaLambdaBase/.settings/org.eclipse.jdt.apt.core.prefs
-LocalLambdaCallers/JavaLambdaBase/.settings/org.eclipse.jdt.core.prefs
-LocalLambdaCallers/JavaLambdaBase/.settings/org.eclipse.core.resources.prefs
+LocalLambdaCallers/JavaLambdaBase/.settings
+LocalLambdaCallers/JavaLambdaBase/.settings/*
 LocalLambdaCallers/JavaLambdaBase/.classpath
 
-LocalLambdaCallers/JavaLambdaStarterOT/.project
+LocalLambdaCallers/JavaLambdaAPM/target
+LocalLambdaCallers/JavaLambdaAPM/target/*
+LocalLambdaCallers/JavaLambdaAPM/bin
+LocalLambdaCallers/JavaLambdaAPM/bin/*
+LocalLambdaCallers/JavaLambdaAPM/.factorypath
+LocalLambdaCallers/JavaLambdaAPM/.project
+LocalLambdaCallers/JavaLambdaAPM/.settings
+LocalLambdaCallers/JavaLambdaAPM/.settings/*
+LocalLambdaCallers/JavaLambdaAPM/.classpath
