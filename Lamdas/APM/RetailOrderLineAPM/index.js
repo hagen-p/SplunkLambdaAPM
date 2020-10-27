@@ -65,12 +65,13 @@ exports.handler = signalFxLambda.asyncWrapper(async(event, context) => {
         tracer.inject(span.context(), tracer.FORMAT_HTTP_HEADERS, headers); // Inject the B3 header in the headers Array
 
         /// Set option for an other HTTPS call top a LAMBDA
+        var discount_Hostname = process.env.DISCOUNT_HOST;
+        var discount_Path = process.env.DISCOUNT_PATH;
         var discount = 0; // No discount unless call returns it
         const options = {
-            hostname: 'wsqs3fnopb.execute-api.eu-west-1.amazonaws.com',
-            //hostname: 'wsqs3fnopb.execute-api.eu-west-1.amazonaws.com',
+            hostname:  discount_Hostname,
             port: 443,
-            path: '/default/RetailDiscountChecker',
+            path: discount_Path,
             method: 'GET',
             headers: headers
         };
