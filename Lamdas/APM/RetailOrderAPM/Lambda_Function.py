@@ -4,8 +4,7 @@ import opentracing
 import os
 import json
 import boto3
-import urllib3
-import urllib.request
+import requests
 
 # The Environment Tag is used by Splunk APM to filter Environments in UI
 APM_ENVIRONMENT = os.environ['SIGNALFX_APM_ENVIRONMENT']
@@ -35,13 +34,14 @@ def lambda_handler(event,context):
     span.set_tag("ProductName", Name)
     span.set_tag("Quantity", Quantity)
     
-       # Call Node-JS lambda via Api Gateway to get the Price
-    http = urllib3.PoolManager()
-    r = http.request('GET', PRICE_URL +"?CustomerType="+CustomerType , headers=TraceHeaders)
-    
+    # Call Node-JS lambda via Api Gateway to get the Price
+    payload = {'CustomerType': CustomerType}
+    r = requests.post(PRICE_URL, headers=TraceHeaders, params=payload)
+    print(r.url)
+    print(r.text)  
     #Get Price from response   
-    Price = json.loads(r.data.decode('utf-8')).get("Price") # Get Value from the Price calculator
-   
+    Price =  json.loads(r.text).get('Price') # Get Value from the Price calculator       
+    print(Price)
      #set tag with price   
     span.set_tag("UnitPrice", Price)
     
@@ -71,5 +71,5 @@ def lambda_handler(event,context):
             'quantity'      : Quantity,
             'customerType'  : CustomerType,
             'price'         : responseFromOrderLine.get('Amount'),
-            'transaction' : responseFromOrderLine.get('TransactionID')
+            'transaction'   : responseFromOrderLine.get('TransactionID')
         }
