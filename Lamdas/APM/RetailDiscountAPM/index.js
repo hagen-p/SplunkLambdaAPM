@@ -1,7 +1,7 @@
 const signalFxLambda = require('signalfx-lambda');
 const tracing = require('signalfx-lambda/tracing'); // needed if we wish to set our own tags an/or wish to call other lambda's
 
-exports.handler = signalFxLambda.asyncWrapper(async (event,contecxt,callback) => {
+exports.handler = signalFxLambda.asyncWrapper(async (event,context,callback) => {
 try {
     var response= {}; 
     const tracer = tracing.tracer();    // get the active tracer (only if you wish to use custom tags or call other lambda's)
@@ -45,4 +45,3 @@ catch (err) {
     console.error(err);
     } 
 });
-

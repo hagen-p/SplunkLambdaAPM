@@ -21,7 +21,7 @@ def lambda_handler(event,context):
     tracer = opentracing.tracer
     TraceHeaders = {} # Here we will store the B3 Headers needed for manual Propagation if required
     signalfx_lambda.tracing.inject(TraceHeaders) # Retrieving B3 Headers and injecting them into the trace header array
-    span = tracer.active_span #grabiing the Active span for Custom Tags
+    span = tracer.active_span #grabbing the Active span for Custom Tags
     print(event)
    
      # Define / read input parameters from the event trigger
