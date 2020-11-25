@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.beans.factory.annotation.Value;
+//import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
+//import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import java.util.*;
@@ -51,7 +51,7 @@ public class JavaLambdaController {
 	public String orderForm(Model model) {
 		// Set up inital values for html form
 		model.addAttribute("order", new Order());
-		return "home"; // view
+		return "order"; // view
 	}
 
 	@PostMapping("/order")
@@ -69,7 +69,8 @@ public class JavaLambdaController {
 		span.tag("Customer", Order.getCustomerType());
 		
 		// replace url with proper URl of you Order Lambda
-		String url = "https://ckfnajft3i.execute-api.eu-west-1.amazonaws.com/default/RetailOrder";
+		//String url = "https://ckfnajft3i.execute-api.eu-west-1.amazonaws.com/default/RetailOrder";
+		String url = "https://d1t91qsus2.execute-api.eu-west-1.amazonaws.com/default/RetailOrderAPM";
 		// create headers
 		HttpHeaders headers = new HttpHeaders();
 		// set `content-type` header

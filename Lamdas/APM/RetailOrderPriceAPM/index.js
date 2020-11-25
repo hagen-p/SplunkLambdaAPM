@@ -24,7 +24,7 @@ async function getDiscount(options) {
     
         });
     });
-};
+}
 
 exports.handler = signalFxLambda.asyncWrapper(async(event, context) => {
     try {
@@ -61,16 +61,18 @@ exports.handler = signalFxLambda.asyncWrapper(async(event, context) => {
         var price = 499;
 
         // now grab headers for content propgation so we can call a different lambda function to get a discount
-        var headers = {}; // set up an array of headers so we can inject  the B3-headers)
-        tracer.inject(span.context(), tracer.FORMAT_HTTP_HEADERS, headers); // Inject the B3 header in the headers Array
-
-        /// Set option for an other HTTPS call top a LAMBDA
+        const headers = {}; // set up an array of headers so we can inject  the B3-headers)
+        //tracer.inject(headers); // Inject the B3 header in the headers Array
+        //console.log("headers:");
+        //console.log(headers);
+        /// Set option for an other HTTPS call to a LAMBDA
+        var discount_Hostname = process.env.DISCOUNT_HOST;
+        var discount_Path = process.env.DISCOUNT_PATH;
         var discount = 0; // No discount unless call returns it
         const options = {
-            hostname: 'wsqs3fnopb.execute-api.eu-west-1.amazonaws.com',
-            //hostname: 'wsqs3fnopb.execute-api.eu-west-1.amazonaws.com',
+            hostname:  discount_Hostname,
             port: 443,
-            path: '/default/RetailDiscountChecker',
+            path: discount_Path,
             method: 'GET',
             headers: headers
         };
@@ -82,7 +84,6 @@ exports.handler = signalFxLambda.asyncWrapper(async(event, context) => {
         var totalPrice = price - discount;
         response = {
             statusCode: 200,
-
             body: JSON.stringify({'Price':totalPrice})
         };
         return response;
