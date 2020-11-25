@@ -69,8 +69,7 @@ public class JavaLambdaController {
 		span.tag("Customer", Order.getCustomerType());
 		
 		// replace url with proper URl of you Order Lambda
-		//String url = "https://ckfnajft3i.execute-api.eu-west-1.amazonaws.com/default/RetailOrder";
-		String url = "https://d1t91qsus2.execute-api.eu-west-1.amazonaws.com/default/RetailOrderAPM";
+		String url = "[REPLACEWITHAPMRETAILORDER]";
 		// create headers
 		HttpHeaders headers = new HttpHeaders();
 		// set `content-type` header

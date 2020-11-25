@@ -68,8 +68,7 @@ public class JavaLambdaController {
 		LOG.info("Quanity : " + Order.getQuantity());
 		LOG.info("Customer:"  + Order.getCustomerType());
 		
-		//String url = "https://ckfnajft3i.execute-api.eu-west-1.amazonaws.com/default/RetailOrder";
-		String url = "https://jf18a94tei.execute-api.eu-central-1.amazonaws.com/default";
+		String url = "[REPLACEWITHBASERETAILORDER]";
 		// create headers
 		HttpHeaders headers = new HttpHeaders();
 		// set `content-type` header
