@@ -38,11 +38,19 @@ def lambda_handler(event,context):
     )
 
     responseFromOrderLine = json.load(response['Payload'])
-   
-    return {
-            'phoneType'     : Name,
+    print (responseFromOrderLine)
+    newPrice = responseFromOrderLine.get('Amount')
+    print ("Price:" , newPrice)
+    transactionID =  responseFromOrderLine.get('TransactionID')
+    print ("transactions id:",  transactionID)
+    retval={'phoneType'     : Name,
             'quantity'      : Quantity,
             'customerType'  : CustomerType,
-            'price'         : responseFromOrderLine.get('Amount'),
-            'transaction' : responseFromOrderLine.get('TransactionID')
+            'price'         : newPrice,
+            'transaction'   : transactionID
+            }
+    return {
+            'statusCode': 200,
+            'body': json.dumps(retval)
+            
         }
