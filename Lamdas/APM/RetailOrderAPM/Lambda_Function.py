@@ -9,7 +9,7 @@ import requests
 # The Environment Tag is used by Splunk APM to filter Environments in UI
 APM_ENVIRONMENT = os.environ['SIGNALFX_APM_ENVIRONMENT']
 PRICE_URL       = os.environ['PRICE_URL']
-ORDER_LINE       = os.environ['ORDER_LINE']
+ORDER_LINE      = os.environ['ORDER_LINE']
 
 # Define the client to interact with AWS Lambda
 client = boto3.client('lambda')
@@ -59,17 +59,25 @@ def lambda_handler(event,context):
         InvocationType = 'RequestResponse',
         Payload = json.dumps(inputParams)
     )
-
+    print (response)
     responseFromOrderLine = json.load(response['Payload'])
-
+    print (responseFromOrderLine)
+    newPrice = responseFromOrderLine.get('Amount')
+    print ("Price:" , newPrice)
+    transactionID =  responseFromOrderLine.get('TransactionID')
+    print ("transactions id:",  transactionID)
     #long line can be send to the span by using log
     span.log_kv({'order-line response': responseFromOrderLine})
     #optionally close the span
     span.finish()
-    return {
-            'phoneType'     : Name,
+    retval={'phoneType'     : Name,
             'quantity'      : Quantity,
             'customerType'  : CustomerType,
-            'price'         : responseFromOrderLine.get('Amount'),
-            'transaction'   : responseFromOrderLine.get('TransactionID')
+            'price'         : newPrice,
+            'transaction'   : transactionID
+            }
+    return {
+            'statusCode': 200,
+            'body': json.dumps(retval)
+            
         }
