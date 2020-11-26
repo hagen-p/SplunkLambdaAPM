@@ -76,7 +76,7 @@ exports.handler = signalFxLambda.asyncWrapper(async(event, context) => {
         
         // calc new price and send it back    
         var totalPrice = price - discount;
-        response = {
+        var response = {
             statusCode: 200,
             body: JSON.stringify({'Price':totalPrice})
         };
