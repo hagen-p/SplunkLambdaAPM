@@ -59,7 +59,7 @@ def lambda_handler(event,context):
         InvocationType = 'RequestResponse',
         Payload = json.dumps(inputParams)
     )
-    print (response)
+   
     responseFromOrderLine = json.load(response['Payload'])
     print (responseFromOrderLine)
     newPrice = responseFromOrderLine.get('Amount')

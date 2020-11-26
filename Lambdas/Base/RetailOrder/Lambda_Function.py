@@ -4,6 +4,10 @@ import boto3
 import urllib3
 import urllib.request
 
+# The Environment Tag is used by Splunk APM to filter Environments in UI
+APM_ENVIRONMENT = os.environ['SIGNALFX_APM_ENVIRONMENT']
+PRICE_URL       = os.environ['PRICE_URL']
+ORDER_LINE      = os.environ['ORDER_LINE']
 
 # Define the client to interact with AWS Lambda
 client = boto3.client('lambda')
@@ -17,8 +21,11 @@ def lambda_handler(event,context):
     CustomerType =  json.loads(event ['body']).get("CustomerType") # Value passed in from test case
   
     # Call Node-JS lambda via Api Gateway to get the Price
-    http = urllib3.PoolManager()
-    r = http.request('GET', 'https://2opmccq30h.execute-api.eu-west-1.amazonaws.com/default/RetailOrderPrice?CustomerType='+CustomerType)
+        # Call Node-JS lambda via Api Gateway to get the Price
+    payload = {'CustomerType': CustomerType}
+    r = requests.post(PRICE_URL, headers=TraceHeaders, params=payload)
+    print( "Price Url: ",r.url)
+    print( "Price Payload: ",r.text)  
     
     #Get Price from response   
     Price = json.loads(r.data.decode('utf-8')).get("Price") # Get Value from the Price calculator
@@ -32,7 +39,7 @@ def lambda_handler(event,context):
     print (inputParams)
     # Invoking Lambda directly
     response = client.invoke(
-        FunctionName = 'RetailOrderLine', # This could be set as a Lambda Environment Variable
+        FunctionName = ORDER_LINE, # This could be set as a Lambda Environment Variable
         InvocationType = 'RequestResponse',
         Payload = json.dumps(inputParams)
     )
