@@ -1,8 +1,8 @@
 import os
 import json
 import boto3
-import urllib3
-import urllib.request
+import requests
+
 
 # The Environment Tag is used by Splunk APM to filter Environments in UI
 APM_ENVIRONMENT = os.environ['SIGNALFX_APM_ENVIRONMENT']
@@ -13,23 +13,24 @@ ORDER_LINE      = os.environ['ORDER_LINE']
 client = boto3.client('lambda')
 
 def lambda_handler(event,context):
-    print(event)
-   
-     # Define / read input parameters from the event trigger
+    print("event received :", event)
+        
+    # Define / read input parameters from the event trigger
     Name         =  json.loads(event ['body']).get("ProductName")  # Value passed in from test case
     Quantity     =  json.loads(event ['body']).get("Quantity")     # Value passed in from test case
     CustomerType =  json.loads(event ['body']).get("CustomerType") # Value passed in from test case
   
     # Call Node-JS lambda via Api Gateway to get the Price
-        # Call Node-JS lambda via Api Gateway to get the Price
+       
     payload = {'CustomerType': CustomerType}
-    r = requests.post(PRICE_URL, headers=TraceHeaders, params=payload)
+    r = requests.post(PRICE_URL,  params=payload)
     print( "Price Url: ",r.url)
     print( "Price Payload: ",r.text)  
     
     #Get Price from response   
-    Price = json.loads(r.data.decode('utf-8')).get("Price") # Get Value from the Price calculator
-  
+    Price =  json.loads(r.text).get('Price') # Get Value from the Price calculator       
+    print("Price: ",Price)
+    
     # Define the input parameters that will be passed on to the child function
     inputParams = {
         "ProductName" : Name ,
