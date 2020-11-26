@@ -51,24 +51,24 @@ public class JavaLambdaController {
 
 	@GetMapping("/order")
 	public String orderForm(Model model) {
-		// Set up inital values for html form
+		// Set up initial values for html form
 		model.addAttribute("order", new Order());
-		return "home"; // view
+		return "order"; // view
 	}
 
 	@PostMapping("/order")
 	public String orderSubmit(@ModelAttribute Order Order, Model model) throws IOException  {
 		LOG.info("Inside OrderSubmit");
-        // span.tag ("environment", sEnvironment);  // this tag is used by signalFX to place this in teh right cncepty in the ui - can be set by ENV variable or the agent
-		// span.tag("Version", sVersion); // sending tag along in the span. usefull for development
+        // span.tag ("environment", sEnvironment);  // this tag is used by signalFX to place this in the right environment in the ui - can be set by ENV variable or the agent
+		// span.tag("Version", sVersion); // sending tag along in the span. useful for development
 		// replace url with proper URl of you Order Lambda
 
 		LOG.info("Order:");
 		LOG.info("phone   : " + Order.getPhoneType());
-		LOG.info("Quanity : " + Order.getQuantity());
+		LOG.info("Quantity : " + Order.getQuantity());
 		LOG.info("Customer:"  + Order.getCustomerType());
 		
-		String url = "[REPLACEWITHBASERETAILORDER]";
+		String url = "REPLACEWITHBASERETAILORDER";
 		// create headers
 		HttpHeaders headers = new HttpHeaders();
 		// set `content-type` header
@@ -89,7 +89,7 @@ public class JavaLambdaController {
 		ObjectReader objectReader = objectMapper.readerForUpdating(Order);
 		
 		Order newOrder = objectReader.readValue(returnedOrder.getBody());
-		LOG.info("The response recieved by the remote call is " + returnedOrder.toString());
+		LOG.info("The response received by the remote call is " + returnedOrder.toString());
 		
 		model.addAttribute("order", newOrder);
 		LOG.info("Leaving OrderSubmit");	
