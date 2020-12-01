@@ -68,7 +68,7 @@ public class JavaLambdaController {
 		LOG.info("Quantity : " + Order.getQuantity());
 		LOG.info("Customer:"  + Order.getCustomerType());
 		
-		String url = "REPLACEWITHBASERETAILORDER";
+		String url = "REPLACEWITHRETAILORDER";
 		// create headers
 		HttpHeaders headers = new HttpHeaders();
 		// set `content-type` header

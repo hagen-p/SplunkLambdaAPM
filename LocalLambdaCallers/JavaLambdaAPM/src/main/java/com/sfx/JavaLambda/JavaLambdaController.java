@@ -69,7 +69,7 @@ public class JavaLambdaController {
 		span.tag("Customer", Order.getCustomerType());
 		
 		// replace url with proper URl of you Order Lambda
-		String url = "REPLACEWITHAPMRETAILORDER";
+		String url = "REPLACEWITHRETAILORDER";
 		// create headers
 		HttpHeaders headers = new HttpHeaders();
 		// set `content-type` header
