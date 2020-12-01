@@ -8,7 +8,7 @@ import json
 import uuid
 import os
 APM_ENVIRONMENT = os.environ['SIGNALFX_APM_ENVIRONMENT']
-LAMBDA_FUNCTION = os.environ['AWS_LAMBDA_FUNCTION_NAME']
+LAMBDA_FUNCTION = os.environ['LAMBDA_FUNCTION_NAME']
 
 @signalfx_lambda.is_traced(with_span=False)
 def lambda_handler(event, context):
