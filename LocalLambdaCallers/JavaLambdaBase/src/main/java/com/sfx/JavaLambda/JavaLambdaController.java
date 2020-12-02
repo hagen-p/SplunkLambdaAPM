@@ -27,13 +27,11 @@ import brave.Tracer;
 
 @Controller
 public class JavaLambdaController {
-	/*
-	 * // set up AutoWired sleuth for APM
-	 * 
-	 * @Autowired Tracer tracer;
-	 * 
-	 * @Autowired SpanCustomizer span;
-	 */
+	
+	 // set up AutoWired sleuth for APM	 
+	 //@Autowired Tracer tracer; 
+	 //@Autowired SpanCustomizer span;
+	
 
 	// setting up some fields for span.tags
 	// private String sEnvironment = "Retail_Demo"; // Tag Used to set up APM environement.
@@ -61,8 +59,7 @@ public class JavaLambdaController {
 		LOG.info("Inside OrderSubmit");
         // span.tag ("environment", sEnvironment);  // this tag is used by signalFX to place this in the right environment in the ui - can be set by ENV variable or the agent
 		// span.tag("Version", sVersion); // sending tag along in the span. useful for development
-		// replace url with proper URl of you Order Lambda
-
+		
 		LOG.info("Order:");
 		LOG.info("phone   : " + Order.getPhoneType());
 		LOG.info("Quantity : " + Order.getQuantity());
