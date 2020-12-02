@@ -36,7 +36,7 @@ public class JavaLambdaController {
 	 */
 
 	// setting up some fields for span.tags
-	// private String environment = "Retail_Demo"; // Tag Used to set up APM environement.
+	// private String sEnvironment = "Retail_Demo"; // Tag Used to set up APM environement.
 	// private String version = "1.1"; // example fields that will be passed as tags
 
 	private final Logger LOG = LoggerFactory.getLogger(this.getClass());
