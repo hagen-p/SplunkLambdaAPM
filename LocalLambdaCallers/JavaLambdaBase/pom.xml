@@ -41,9 +41,8 @@
 			<artifactId>spring-boot-starter-thymeleaf</artifactId> 
 		</dependency>
         <!-- <dependency>
-    		<groupId>com.signalfx.public</groupId>
-    		<artifactId>signalfx-sleuth-zipkin-adapter</artifactId>
-    		<version>1.0.1-RELEASE</version>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-zipkin</artifactId>
 		</dependency>  -->
 	</dependencies>
 
