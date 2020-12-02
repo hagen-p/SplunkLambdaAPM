@@ -26,10 +26,8 @@ import brave.Tracer;
 @Controller
 public class JavaLambdaController {
 	
-	 // set up AutoWired sleuth for APM
-	
+	// set up AutoWired sleuth for APM
 	@Autowired Tracer tracer;
-	 
 	@Autowired SpanCustomizer span;
 	
 
