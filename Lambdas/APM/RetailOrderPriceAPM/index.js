@@ -45,7 +45,8 @@ exports.handler = signalFxLambda.asyncWrapper(async(event, context) => {
         if (span) {
             console.log("We have a span")
             //We now can use span.setTag("tag_label", value) to set your own tags
-            span.setTag("Custom tag", "custom value")
+            span.setTag("environment", process.env.SIGNALFX_APM_ENVIRONMENT) ///setting the env to your environment
+            span.setTag("Custom tag", "custom value") //example custom tag
         }
         else {
             console.error("No span")

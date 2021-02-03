@@ -22,6 +22,7 @@ try {
     if (span){
         console.log ("We have a span");
         //We now can use span.setTag("tag_label", value) to set your own tags
+        span.setTag("environment", process.env.SIGNALFX_APM_ENVIRONMENT) ///setting the env to your environment    
         span.setTag("Custom tag", "custom value");
     }
     else{
