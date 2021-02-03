@@ -68,6 +68,7 @@ def lambda_handler(event,context):
     print ("Price:" , newPrice)
     transactionID =  responseFromOrderLine.get('TransactionID')
     print ("transactions id:",  transactionID)
+    span.set_tag("TransactionID", transactionID)
     #long line can be send to the span by using log
     span.log_kv({'order-line response': responseFromOrderLine})
     #optionally close the span
