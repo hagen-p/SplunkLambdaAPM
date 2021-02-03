@@ -25,15 +25,15 @@ import brave.Tracer;
 
 @Controller
 public class JavaLambdaController {
-	
 	// set up AutoWired sleuth for APM
+	
 	@Autowired Tracer tracer;
 	@Autowired SpanCustomizer span;
 	
 
 	// setting up some fields for span.tags
-	private String environment = "Retail_Demo"; // Tag Used to set up APM environement.
-	private String version = "1.1"; // example fields that will be passed as tags
+	//private String environment = "Retail_Demo"; // Tag Used to set up APM environement.
+	//private String version = "1.1"; // example fields that will be passed as tags
 
 	private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
@@ -55,16 +55,16 @@ public class JavaLambdaController {
 	@PostMapping("/order")
 	public String orderSubmit(@ModelAttribute Order Order, Model model) throws IOException  {
 		LOG.info("Inside OrderSubmit");
-         span.tag ("environment", environment);  // this tag is used by signalFX to place this in teh right environment in the ui - can be set by ENV variable or the agent
-		 span.tag("Version", version); // sending tag along in the span. useful for development
+        // span.tag ("environment", environment);  // this tag is used by signalFX to place this in teh right environment in the ui - can be set by ENV variable or the agent
+		// span.tag("Version", version); // sending tag along in the span. useful for development
 		
 		LOG.info("Order:");
 		LOG.info("phone   : " + Order.getPhoneType());
 		LOG.info("Quantity : " + Order.getQuantity());
 		LOG.info("Customer:"  + Order.getCustomerType());
-		span.tag("phone",    Order.getPhoneType());
-		span.tag("Quantity",  String.valueOf(Order.getQuantity()));
-		span.tag("Customer", Order.getCustomerType());
+		//span.tag("phone",    Order.getPhoneType());
+		//span.tag("Quantity",  String.valueOf(Order.getQuantity()));
+		//span.tag("Customer", Order.getCustomerType());
 		
 		// replace url with proper URl of you Order Lambda
 		String url = "REPLACEWITHRETAILORDER";
