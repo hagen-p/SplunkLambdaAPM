@@ -28,8 +28,7 @@ async function getDiscount(options) {
 
 exports.handler = signalFxLambda.asyncWrapper(async(event, context) => {
     try {
-        let response ="";
-        const tracer = tracing.tracer(); // get the active tracer (only if you wish to use custom tags or call other lambda's)
+         const tracer = tracing.tracer(); // get the active tracer (only if you wish to use custom tags or call other lambda's)
         if (tracer) {
             console.log("We have a tracer")
         }
@@ -76,7 +75,7 @@ exports.handler = signalFxLambda.asyncWrapper(async(event, context) => {
         
         // calc new price and send it back    
         var totalPrice = price - discount;
-        var response = {
+        let response = {
             statusCode: 200,
             body: JSON.stringify({'Price':totalPrice})
         };
