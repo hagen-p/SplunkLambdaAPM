@@ -3,6 +3,9 @@ const tracing = require('signalfx-lambda/tracing'); // needed if we wish to set 
 
 exports.handler = signalFxLambda.asyncWrapper(async (event,context,callback) => {
 try {
+    console.log("Received event:", JSON.stringify(event, null, 2));
+    const CustomerType = event.queryStringParameters.CustomerType;
+    console.log ("type:",CustomerType)
     var response= {}; 
     const tracer = tracing.tracer();    // get the active tracer (only if you wish to use custom tags or call other lambda's)
     if (tracer){
@@ -35,7 +38,13 @@ try {
     return response;
     }
    
-   var discount= 99; // hardcoded.. could come from DB
+   var discount= 0; // hardcoded.. could come from DB
+   if (CustomerType ==="Gold"){
+    discount= 29;
+   }
+   else if  (CustomerType === "Platinum"){
+    discount= 99;
+   }
    response = {
         statusCode: 200,
          body:JSON.stringify({'Discount': discount})

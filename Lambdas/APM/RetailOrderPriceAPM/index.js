@@ -70,7 +70,7 @@ exports.handler = signalFxLambda.asyncWrapper(async(event, context) => {
         const options = {
             hostname:  discount_Hostname,
             port: 443,
-            path: discount_Path,
+            path: discount_Path +"?CustomerType="+CustomerType,
             method: 'GET'
         };
 
@@ -79,6 +79,8 @@ exports.handler = signalFxLambda.asyncWrapper(async(event, context) => {
         
         // calc new price and send it back    
         var totalPrice = price - discount;
+         //Handle error situation
+        //if (CustomerType === "Platinum" && )
         let response = {
             statusCode: 200,
             body: JSON.stringify({'Price':totalPrice})
