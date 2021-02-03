@@ -29,7 +29,7 @@ async function getDiscount(options) {
 exports.handler = signalFxLambda.asyncWrapper(async(event, context) => {
     try {
         console.log('Received event:', JSON.stringify(event, null, 2));
-        const CustomerType = event.CustomerType;
+        const CustomerType = event.queryStringParameters.CustomerType;
         console.log ("type:",CustomerType)
         const tracer = tracing.tracer(); // get the active tracer (only if you wish to use custom tags or call other lambda's)
         if (tracer) {
