@@ -67,6 +67,9 @@ def lambda_handler(event, context):
                 scopespan.set_tag("Quantity", quantity)
                 scopespan.set_tag("UnitPrice", unitPrice)
                 scopespan.set_tag("TransactionId",transactionId)
+                if amount == 800:
+                     #when buying two bad phones as platinum force code error as set_tag doens't exist
+                     scopescan.set_tags("error_msg","This is a conditional coding error")
                 scope.close()
         #optionally close the span
         span.finish()

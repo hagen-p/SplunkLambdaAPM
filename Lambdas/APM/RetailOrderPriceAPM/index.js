@@ -79,8 +79,7 @@ exports.handler = signalFxLambda.asyncWrapper(async(event, context) => {
         
         // calc new price and send it back    
         var totalPrice = price - discount;
-         //Handle error situation
-        //if (CustomerType === "Platinum" && )
+        
         let response = {
             statusCode: 200,
             body: JSON.stringify({'Price':totalPrice})
