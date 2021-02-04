@@ -56,10 +56,13 @@ def lambda_handler(event, context):
             #send tags and close span
             scopespan.set_tag("Amount",amount)
             scope.close()
+        
         if productName== "Bad Phone":
             with tracer.start_active_span(LAMBDA_FUNCTION+"_error", tags=span_tags) as scope:  
+                scopespan = scope.span
+                #3 Implement Error Scenario
                 scopespan.set_tags("error", True)
-                scopespan.set_tag("log","Phone type is unusable for specific customer type")
+                scopespan.set_tag("log","Phone type is unusable for this customer type")
                 scope.close()
         #optionally close the span
         span.finish()
