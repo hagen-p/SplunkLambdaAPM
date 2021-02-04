@@ -63,10 +63,15 @@ def lambda_handler(event, context):
                 #3 Implement Error Scenario
                 scopespan.set_tags("error", True)
                 scopespan.set_tag("log","Phone type is unusable for this customer type")
+                scopespan.set_tag("ProductName",productName)
+                scopespan.set_tag("Quantity", quantity)
+                scopespan.set_tag("UnitPrice", unitPrice)
+                scopespan.set_tag("TransactionId",transactionId)
                 scope.close()
         #optionally close the span
         span.finish()
         #4 Format and return the result
+       
         return {
             'TransactionID' :   transactionId,
             'ProductName'   :   productName,
