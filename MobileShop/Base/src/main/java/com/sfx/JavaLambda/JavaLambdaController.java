@@ -33,7 +33,6 @@ public class JavaLambdaController {
 	//@Autowired SpanCustomizer span;
 
 	// setting up some fields for span.tags
-	// private String sEnvironment = "Retail_Demo"; // Tag Used to set up APM environement.
 	// private String version = "1.1"; // example fields that will be passed as tags
 
 	private final Logger LOG = LoggerFactory.getLogger(this.getClass());
@@ -56,14 +55,17 @@ public class JavaLambdaController {
 	@PostMapping("/order")
 	public String orderSubmit(@ModelAttribute Order Order, Model model) throws IOException  {
 		LOG.info("Inside OrderSubmit");
-        // span.tag ("environment", sEnvironment);  // this tag is used by signalFX to place this in the right environment in the ui - can be set by ENV variable or the agent
 		// span.tag("Version", sVersion); // sending tag along in the span. useful for development
 
 		LOG.info("Order:");
 		LOG.info("phone   : " + Order.getPhoneType());
 		LOG.info("Quantity : " + Order.getQuantity());
 		LOG.info("Customer:"  + Order.getCustomerType());
-
+         // More tags	
+		//span.tag("phone",    Order.getPhoneType());
+		//span.tag("Quantity",  String.valueOf(Order.getQuantity()));
+		//span.tag("Customer", Order.getCustomerType());
+		
 		String url = "REPLACEWITHRETAILORDER";
 		// create headers
 		HttpHeaders headers = new HttpHeaders();
@@ -86,6 +88,9 @@ public class JavaLambdaController {
 
 		Order newOrder = objectReader.readValue(returnedOrder.getBody());
 		LOG.info("The response received by the remote call is " + returnedOrder.toString());
+		
+		//capture the response and put it in a tag
+		//span.tag("Lambda Response",returnedOrder.toString());
 		
 		model.addAttribute("order", newOrder);
 		LOG.info("Leaving OrderSubmit");

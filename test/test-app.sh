@@ -1,3 +1,1 @@
-siege -H 'Content-Type:application/json' "http://localhost:8080/order POST &lt; ./test.json" -c 1 -r 10
-
-
+curl -X POST -F "phoneType=test phone" -F "Quantity=1" -F "CustomerType=Gold"  http://localhost:8080/order

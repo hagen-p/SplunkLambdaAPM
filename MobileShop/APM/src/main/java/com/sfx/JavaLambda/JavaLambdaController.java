@@ -9,31 +9,26 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.RestTemplate;
-//import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-//import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import java.util.*;
 import java.io.IOException;
 
-import brave.sampler.Sampler;
+// imports for APM
 import brave.SpanCustomizer;
 import brave.Tracer;
 
-
 @Controller
 public class JavaLambdaController {
-	// set up AutoWired sleuth for APM
 	
+	// set up AutoWired sleuth for APM
 	@Autowired Tracer tracer;
 	@Autowired SpanCustomizer span;
 	
-
 	// setting up some fields for span.tags
-	//private String environment = "Retail_Demo"; // Tag Used to set up APM environement.
-	//private String version = "1.1"; // example fields that will be passed as tags
+	private String version = "1.1"; // example fields that will be passed as tags
 
 	private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
@@ -55,16 +50,16 @@ public class JavaLambdaController {
 	@PostMapping("/order")
 	public String orderSubmit(@ModelAttribute Order Order, Model model) throws IOException  {
 		LOG.info("Inside OrderSubmit");
-        // span.tag ("environment", environment);  // this tag is used by signalFX to place this in teh right environment in the ui - can be set by ENV variable or the agent
-		// span.tag("Version", version); // sending tag along in the span. useful for development
+        span.tag("Version", version); // sending tag along in the span. useful for development
 		
 		LOG.info("Order:");
 		LOG.info("phone   : " + Order.getPhoneType());
 		LOG.info("Quantity : " + Order.getQuantity());
 		LOG.info("Customer:"  + Order.getCustomerType());
-		//span.tag("phone",    Order.getPhoneType());
-		//span.tag("Quantity",  String.valueOf(Order.getQuantity()));
-		//span.tag("Customer", Order.getCustomerType());
+        // More tags	
+		span.tag("phone",    Order.getPhoneType());
+		span.tag("Quantity",  String.valueOf(Order.getQuantity()));
+		span.tag("Customer", Order.getCustomerType());
 		
 		// replace url with proper URl of you Order Lambda
 		String url = "REPLACEWITHRETAILORDER";
@@ -89,7 +84,10 @@ public class JavaLambdaController {
 		
 		Order newOrder = objectReader.readValue(returnedOrder.getBody());
 		LOG.info("The response received by the remote call is " + returnedOrder.toString());
-		//span.tag("Lambda Response",returnedOrder.toString());
+		
+		//capture the response and put it in a tag
+		span.tag("Lambda Response",returnedOrder.toString());
+		
 		model.addAttribute("order", newOrder);
 		LOG.info("Leaving OrderSubmit");	
 		return "result";
