@@ -33,7 +33,8 @@ public class JavaLambdaController {
 	//@Autowired SpanCustomizer span;
 
 	// setting up some fields for span.tags
-	// private String version = "1.1"; // example fields that will be passed as tags
+	//private String shopId  = "notMyShop";  //replace this with the identifier assigned to you ie. like ACME in workshop; 
+	//private String version = "1.1"; // example fields that will be passed as tags
 
 	private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
@@ -56,7 +57,8 @@ public class JavaLambdaController {
 	public String orderSubmit(@ModelAttribute Order Order, Model model) throws IOException  {
 		LOG.info("Inside OrderSubmit");
 		// span.tag("Version", sVersion); // sending tag along in the span. useful for development
-
+		//span.tag("ShopID", shopid)
+	
 		LOG.info("Order:");
 		LOG.info("phone   : " + Order.getPhoneType());
 		LOG.info("Quantity : " + Order.getQuantity());
