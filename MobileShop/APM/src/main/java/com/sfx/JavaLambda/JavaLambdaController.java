@@ -28,7 +28,7 @@ public class JavaLambdaController {
 	@Autowired SpanCustomizer span;
 	
 	// setting up some fields for span.tags
-	private String shopId  = "LocusShop";  //replace this with the identifier assigned to you ie. like ACME in workshop; 
+	private String shopId  = "LocustShop";  //replace this with the identifier assigned to you ie. like ACME in workshop; 
 	private String version = "1.1"; // example fields that will be passed as tags
 
 	private final Logger LOG = LoggerFactory.getLogger(this.getClass());
