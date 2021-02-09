@@ -56,8 +56,8 @@ public class JavaLambdaController {
 	@PostMapping("/order")
 	public String orderSubmit(@ModelAttribute Order Order, Model model) throws IOException  {
 		LOG.info("Inside OrderSubmit");
-		// span.tag("Version", sVersion); // sending tag along in the span. useful for development
-		//span.tag("ShopId", shopId)
+		//span.tag("Version", version); // sending tag along in the span. useful for development
+		//span.tag("ShopId", shopId);
 	
 		LOG.info("Order:");
 		LOG.info("phone   : " + Order.getPhoneType());
