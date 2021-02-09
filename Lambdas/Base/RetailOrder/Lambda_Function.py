@@ -44,7 +44,7 @@ def lambda_handler(event,context):
         InvocationType = 'RequestResponse',
         Payload = json.dumps(inputParams)
     )
-    responseCode = response.statusCode
+    responseCode = 200
     responseFromOrderLine = json.load(response['Payload'])
     print (responseFromOrderLine)
     newPrice = responseFromOrderLine.get('Amount')
