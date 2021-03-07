@@ -10,6 +10,7 @@ import os
 APM_ENVIRONMENT = os.environ['SIGNALFX_APM_ENVIRONMENT']
 LAMBDA_FUNCTION = os.environ['LAMBDA_FUNCTION_NAME']
 
+@signalfx_lambda.emits_metrics()
 @signalfx_lambda.is_traced(with_span=False)
 def lambda_handler(event, context):
     # Setup tracer so we can create span and set the B3 Headers
