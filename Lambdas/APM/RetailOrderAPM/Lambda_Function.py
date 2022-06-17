@@ -1,78 +1,80 @@
-import signalfx_lambda
-import opentracing
-
-import os
+mport os
 import json
 import boto3
 import requests
 
-# The Environment Tag is used by Splunk APM to filter Environments in UI
-APM_ENVIRONMENT = os.environ['SIGNALFX_APM_ENVIRONMENT']
+from opentelemetry import trace
+def logo11y(ctx, message):
+    o11yEnv = os.environ['OTEL_RESOURCE_ATTRIBUTES'].partition ('deployment.environment=')[2]
+    otelSpanID = format(ctx.span_id, "016x")
+    otelTraceID = format(ctx.trace_id, "032x")
+    logline = {'trace_id'     :  otelTraceID,
+                'span_id'     :  otelSpanID,
+                'service.name' : os.environ['OTEL_SERVICE_NAME'],
+                'deployment.environment' : o11yEnv
+            }
+    print ( json.dumps(logline) + " " + message)
+    return
+
 PRICE_URL       = os.environ['PRICE_URL']
 ORDER_LINE      = os.environ['ORDER_LINE']
 
 # Define the client to interact with AWS Lambda
 client = boto3.client('lambda')
 
-@signalfx_lambda.emits_metrics()
-@signalfx_lambda.is_traced()
-def lambda_handler(event,context):
-    print("event received :", event)
 
-     # Setup tracer so we can create spans and retrieve the B3 Headers
-    tracer = opentracing.tracer
-    TraceHeaders = {} # Here we will store the B3 Headers needed for manual Propagation if required
-    signalfx_lambda.tracing.inject(TraceHeaders) # Retrieving B3 Headers and injecting them into the trace header array
-    span = tracer.active_span #grabbing the Active span for Custom Tags
-    print(event)
-   
-     # Define / read input parameters from the event trigger
+def lambda_handler(event,context):
+    # grab the current span , then grab the span contect for related content
+    current_span = trace.get_current_span()
+    ctx = current_span.get_span_context()
+    #Setup log line
+    logo11y( ctx, " We recieved: " + str(event))
+
+    #Define / read input parameters from the event trigger
     Name         =  json.loads(event ['body']).get("ProductName")  # Value passed in from test case
     Quantity     =  json.loads(event ['body']).get("Quantity")     # Value passed in from test case
     CustomerType =  json.loads(event ['body']).get("CustomerType") # Value passed in from test case
   
     # Adding tags
-    span.set_tag("environment" , APM_ENVIRONMENT) # Usefull in APM to make sure it matches your expected environement
-    span.set_tag("ProductName", Name)
-    span.set_tag("Quantity", Quantity)
+    current_span.set_attribute("ProductName", Name)
+    current_span.set_attribute("Quantity", Quantity)
     
     # Call Node-JS lambda via Api Gateway to get the Price
     payload = {'CustomerType': CustomerType}
-    r = requests.post(PRICE_URL, headers=TraceHeaders, params=payload)
-    print( "Price Url: ",r.url)
-    print( "Price Payload: ",r.text)  
+    r = requests.post(PRICE_URL,  params=payload)
+
+    logo11y( ctx,"Price Url: " + r.url)
+    logo11y( ctx,"Price Payload: "  + r.text)  
     #Get Price from response   
-    Price =  json.loads(r.text).get('Price') # Get Value from the Price calculator       
-    print("Price: ",Price)
-     #set tag with price   
-    span.set_tag("UnitPrice", Price)
-    
-    # Define the input parameters that will be passed on to the child function
+    Price =  json.loads(r.text).get('Price') # Get Value from the Price calculator  
+#    Price = 600. # for testing 
+    logo11y( ctx,"Price: " + str(Price))
+
+  # Define the input parameters that will be passed on to the line item calculation function
     inputParams = {
         "ProductName" : Name ,
         "Quantity"    : Quantity,
-        "UnitPrice"   : Price,
-        "TraceHeaders"  : TraceHeaders # Add the TraceHeaders as an input parameter so it can be used by the Lambda being called
+        "UnitPrice"   : Price
     }
     print (inputParams)
     # Invoking Lambda directly
+    logo11y( ctx, ORDER_LINE)
+
     response = client.invoke(
-        FunctionName = ORDER_LINE, # This is set as a Lambda Environment Variable
+        FunctionName = ORDER_LINE, # This could be set as a Lambda Environment Variable
         InvocationType = 'RequestResponse',
         Payload = json.dumps(inputParams)
     )
-    responseCode = 200
     responseFromOrderLine = json.load(response['Payload'])
-    print (responseFromOrderLine)
+    logo11y( ctx, responseFromOrderLine)
+    
     newPrice = responseFromOrderLine.get('Amount')
-    print ("Price:" , newPrice)
+    logo11y( ctx,"Price: "  + str(newPrice))
+    
     transactionID =  responseFromOrderLine.get('TransactionID')
-    print ("transactions id:",  transactionID)
-    span.set_tag("TransactionID", transactionID)
-    #long line can be send to the span by using log
-    span.log_kv({'order-line response': responseFromOrderLine})
-    #optionally close the span
-    span.finish()
+    logo11y( ctx,"transactions id: " +  transactionID)
+    
+    responseCode = 200
     retval={'phoneType'     : Name,
             'quantity'      : Quantity,
             'customerType'  : CustomerType,
@@ -84,3 +86,5 @@ def lambda_handler(event,context):
             'body': json.dumps(retval)
             
         }
+        
+        

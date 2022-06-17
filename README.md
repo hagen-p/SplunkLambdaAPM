@@ -5,7 +5,8 @@ The workshop resource set exist out of several modules:
 
 A Java spring-boot app to run locally that calls the Lambda function set
 Several Lambda Microservices written in python and Node-Js simulating a real order system.
-A terraform module to install the basic lambda's in AWS
+USe of Splunks Auto instrumentation libaries to get initial tracing  working
+Adding loggin and span tags to enrich the
 
 The workshop documentation guiding you with adding Tracing to each of the modules
 

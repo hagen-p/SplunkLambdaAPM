@@ -68,35 +68,41 @@ public class JavaLambdaController {
 		//span.tag("Quantity",  String.valueOf(Order.getQuantity()));
 		//span.tag("Customer", Order.getCustomerType());
 		
-		String url = "REPLACEWITHRETAILORDER";
-		// create headers
-		HttpHeaders headers = new HttpHeaders();
-		// set `content-type` header
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		// set `accept` header
-		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-		// create a map for post parameters
-		Map<String, Object> map = new HashMap<>();
-		map.put("ProductName", Order.getPhoneType());
-		map.put("Quantity",  Order.getQuantity());
-		map.put("CustomerType", Order.getCustomerType());
-		// build the request
-		HttpEntity<Map<String, Object>> orderRequest = new HttpEntity<>(map, headers);
-		// send POST request
-		ResponseEntity<String> returnedOrder = this.restTemplate.postForEntity(url, orderRequest, String.class);
+		String url = "REPLACEWITHRETAILORDER-URL";
+		if (url.startsWith("http")) {
+			// create headers
+			HttpHeaders headers = new HttpHeaders();
+			// set `content-type` header
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			// set `accept` header
+			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+			// create a map for post parameters
+			Map<String, Object> map = new HashMap<>();
+			map.put("ProductName", Order.getPhoneType());
+			map.put("Quantity",  Order.getQuantity());
+			map.put("CustomerType", Order.getCustomerType());
+			// build the request
+			HttpEntity<Map<String, Object>> orderRequest = new HttpEntity<>(map, headers);
+			// send POST request
+			ResponseEntity<String> returnedOrder = this.restTemplate.postForEntity(url, orderRequest, String.class);
 
-		ObjectMapper objectMapper = new ObjectMapper();
-		ObjectReader objectReader = objectMapper.readerForUpdating(Order);
+			ObjectMapper objectMapper = new ObjectMapper();
+			ObjectReader objectReader = objectMapper.readerForUpdating(Order);
 
-		Order newOrder = objectReader.readValue(returnedOrder.getBody());
-		LOG.info("The response received by the remote call is " + returnedOrder.toString());
-		
-		//capture the response and put it in a tag
-		//span.tag("Lambda Response",returnedOrder.toString());
-		
-		model.addAttribute("order", newOrder);
-		LOG.info("Leaving OrderSubmit");
-		return "result";
+			Order newOrder = objectReader.readValue(returnedOrder.getBody());
+			LOG.info("The response received by the remote call is " + returnedOrder.toString());
+			
+			//capture the response and put it in a tag
+			//span.tag("Lambda Response",returnedOrder.toString());
+			
+			model.addAttribute("order", newOrder);
+			LOG.info("Leaving OrderSubmit");
+			return "result";
+			}
+		else
+		{	
+			LOG.error("url not replaced with valid url to reatail order Lambda!");
+			return "error";
+		}	
 	}
-
 }

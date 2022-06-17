@@ -38,7 +38,14 @@
                 <form action="#" th:action="@{/order}" th:object="${order}" method="post">
                     <div class="form-group">
                     <Label for="phoneInput">Phone</label>
-                    <input type="text" class="form-control" th:field="*{phoneType}" />
+                    <!--input type="text" class="form-control" th:field="*{phoneType}" /-->
+                    <select class="form-control" th:field="*{phoneType}">
+                        <option th:value="'iPhone 13 Pro Silver'" th:text="'iPhone 13 Pro Silver'"></option>
+                        <option th:value="'iPhone 12 Silver'" th:text="'iPhone 12 Silver'"></option>
+                        <option th:value="'Samsung Z Flip3 5G'" th:text="'Samsung Z Flip3 5G'"></option>
+                        <option th:value="'Nokia 7110'" th:text="'Nokia 7110'"></option>
+                        <option th:value="'Test Phone'" th:text="'Test Phone'"></option>
+                    </select>
                     <label for="quantityInput">Quantity</label>
                     <input type="number" class="form-control" th:field="*{quantity}" /></p>
                     <label for="customerType">Customer</label>
